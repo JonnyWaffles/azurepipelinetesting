@@ -1,0 +1,28 @@
+name: Deploytesting(Date:yyyyMMdd)$(Rev:.r)
+pr: none
+
+pool:
+  name: Orcas
+variables:
+  system.python: 'C:\Program Files\Python37'
+
+stages:
+  - stage: Build
+    displayName: Build Stage
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - script: |
+              $(system.python)/python.exe -m venv venv --copies
+              call ./venv/scripts/activate.bat
+              pip install -r requirements.txt
+              python -m deploytesting
+            displayName: Build venv
+      - job: Unit Test
+        displayName: Unit Test
+        steps:
+          - script: |
+              call ./venv/scripts/activate.bat
+
+
